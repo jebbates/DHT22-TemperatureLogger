@@ -6,8 +6,7 @@
 	"database":"temperatures"
 	}],
 "sensors":
-	[[{"name":"Inside"},{"gpio":"22"},{"sensorType":"22"},{"temperatureLowLimit":"18"},{"temperatureHighLimit":"24"},{"temperatureThreshold":"5"},{"humidityLowLimit":"10"},{"humidityHighLimit":"60"},{"humidityThreshold":"10"}],
-	[{"name":"Outside"},{"gpio":"23"},{"sensorType":"22"},{"temperatureLowLimit":"-10"},{"temperatureHighLimit":"15"},{"temperatureThreshold":"5"},{"humidityLowLimit":"40"},{"humidityHighLimit":"60"},{"humidityThreshold":"10"}]],
+	[[{"name":"Inside"},{"sensorIP":"XXX.XXX.XXX.XX"},{"sensorType":"22"},{"temperatureLowLimit":"18"},{"temperatureHighLimit":"24"},{"temperatureThreshold":"5"},{"humidityLowLimit":"10"},{"humidityHighLimit":"60"},{"humidityThreshold":"10"}],
 "mailInfo":[{
 	"senderaddress":"email address to sender field @gmail.com",
 	"receiveraddress":"email address where to send warnings @gmail.com",
@@ -29,5 +28,5 @@
 	}],
 "useFahrenheits":"n",
 "mailSendingTimeoutInFullHours":"1",
-"adafruitPath":"/home/pi/Adafruit_Python_DHT/examples/AdafruitDHT.py"
+"adafruitPath":"/home/pi/bin/requests_esp8266.py"
 }
