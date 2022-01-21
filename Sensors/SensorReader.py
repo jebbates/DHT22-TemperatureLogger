@@ -37,12 +37,12 @@ class SensorReader():
 		self.logger.info('Starting to collect temperature and humidity data from the the sensors')
 		for sensor in self.configurations["sensorConfig"]:
 
-			# Set sensor name, gpio and type to variables for easier use
+			# Set sensor name, IP address and type to variables for easier use
 			sensorName = sensor[0]['name']	
 			# Log entry to indicate what sensor
 			self.logger.info('Collecting data for sensor: {0}'.format(sensorName))		
 
-			gpio = sensor[1]['gpio']
+            sensorIP = sensor[1]['sensorIP']
 			sensorType = sensor[2]['sensorType']
 			temperatureLowLimit = sensor[3]['temperatureLowLimit']
 			temperatureHighLimit = sensor[4]['temperatureHighLimit']
@@ -55,7 +55,7 @@ class SensorReader():
 			try:			
 				# Get results for the sensor
 				self.logger.info('Get readings for the sensor %s',sensorName)
-				temperature,humidity = self._getSensorReadings(sensorType,gpio)
+				temperature,humidity = self._getSensorReadings(sensorType,sensorIP)
 
 				# Insert inner dictionary with sensor name. Will hold humidity and temperature for the sensor.
 				readingsFromSensors[sensorName] = {}
@@ -124,18 +124,20 @@ class SensorReader():
 		self.logger.info('Sensor readings collected')	
 		return readingsFromSensors,failedSensors
 
-	' Private function for reading sensor data. Needs sensor type e.g. 22 and gpio where it is attached in RPI'	
-	def _getSensorReadings(self,sensorType,gpio):
+	' Private function for reading sensor data. Needs sensor type e.g. 22 and IP address of remote sensor'	
+	def _getSensorReadings(self,sensorType,sensorIP):
+        # NOTE: the sensorType is not directly utilized at this time
 	
-		self.logger.info("Start reading values for sensor type " + sensorType + " in gpio " + gpio)
+		self.logger.info("Start reading values for sensor type " + sensorType )
+        self.logger.info(" The sensor is remotely accessed via : " + sensorIP)
 
 		# Pop up subprocess and use adafruit library to get readings
-		sensorReadings = subprocess.check_output(['sudo',self.adafruitPathConfig,sensorType,gpio])
+		sensorReadings = subprocess.check_output([self.adafruitPathConfig,sensorType,sensorIP])
 		# sensorReadings = "Temp=23.0 Humidity=58.6%" # Test readings, uncomment if needed
 		
 		self.logger.info("Values from sensor: %s",sensorReadings)
 		
-		# It there was no readings, raise execption to indicate that something is wrong with gpio xx
+		# It there was no readings, raise execption to indicate that something is wrong with the IP address
 		# If there is nothing in sensor readings, or it contains words 'Try again!' we know that something went wrong
 		if not sensorReadings or re.search('Try again!',sensorReadings):
 			raise Exception('Failed to get readings')
